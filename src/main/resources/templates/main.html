@@ -15,7 +15,7 @@
         .centered {
             font-family: Impact,sans-serif;
             position: absolute;
-            top: 35%;
+            top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
@@ -35,7 +35,7 @@
         <div class="mainContainer">
             <img src="../static/images/bg-main.jpeg" th:src="@{/images/bg-main.jpeg}" width="100%">
             <h1 class="centeredH1">Приглашаем вас посетить нашу сеть кинотеатров.</h1>
-            <div class="centered"><a class="btn btn-outline-secondary btn-lg " href="/cinemas">Окунитесь в удивительный мир кино!</a></div>
+            <a class="centered btn btn-outline-secondary btn-lg " href="/cinemas">Окунитесь в удивительный мир кино!</a>
         </div>
         <div th:insert="blocks/footerr :: footer"></div>
     </main>
