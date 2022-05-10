@@ -1,6 +1,8 @@
 package com.example.cinemahain.controller;
 
+import com.example.cinemahain.models.Films;
 import com.example.cinemahain.models.Promotions;
+import com.example.cinemahain.repository.FilmsRepo;
 import com.example.cinemahain.repository.PromotionsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,12 +16,17 @@ public class MainController {
     @Autowired
     private PromotionsRepo promotionsRepo;
 
+    @Autowired
+    private FilmsRepo filmsRepo;
+
     @GetMapping("/")
     public String home(Model model) {
         return "main";
     }
     @GetMapping("/films")
     public String films(Model model) {
+        Iterable<Films> films = filmsRepo.findAll();
+        model.addAttribute("films", films);
         return "films";
     }
     @GetMapping("/workers")
