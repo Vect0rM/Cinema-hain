@@ -21,8 +21,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring()
                 .antMatchers(
-                        "/css/**", "/fonts/**",
-                        "/images/**", "/js/**", "/static/**");
+                        "/css/**",
+                        "/images/**", "/static/**");
     }
 
     @Override
@@ -31,7 +31,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/orders").hasAnyRole("USER")
                 .antMatchers("/admin").hasAnyRole("ADMIN")
                 .antMatchers("/*", "/resources/**").permitAll()
                 .anyRequest().authenticated()
@@ -51,5 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
+
     }
 }

@@ -13,22 +13,15 @@
                     <li><a href="/promotions" class="nav-link px-2 text-white">Акции</a></li>
                 </ul>
 
-                <div sec:authorize="!hasRole('USER')" class="text-end">
+                <div sec:authorize="!hasRole('USER')" class="text-end pe-sm-3">
                     <button onClick='location.href="/login"' class="btn btn-outline-light me-2">Войти</button>
                     <button onClick='location.href="/registration"' class="btn btn-warning">Зарегистрироваться</button>
                 </div>
 
-                <div sec:authorize="hasRole('USER')" class="text-end">
-                    <button sec:authentication="name" class="btn btn-outline-light me-2"></button>
+                <div sec:authorize="hasRole('USER')" class="text-end pe-sm-3">
+                    <a  sec:authentication="name" class="btn btn-outline-light me-2" th:href=" @{|~/settings/${#authentication.name}|}">Сотрудники</a>
                     <form class="btn" th:action="@{/logout}" method="post">
                         <input class=" btn-warning" type="submit" value="Выйти"/>
-                    </form>
-                </div>
-
-                <div sec:authorize="hasRole('ADMIN')" class="text-end">
-                    <button sec:authentication="name" class="btn btn-outline-light me-2"></button>
-                    <form class="btn" th:action="@{/logout}" method="post">
-                        <input class="btn btn-warning" type="submit" value="Выйти"/>
                     </form>
                 </div>
             </div>
