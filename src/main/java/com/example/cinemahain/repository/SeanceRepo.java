@@ -4,4 +4,5 @@ import com.example.cinemahain.models.Seance;
 import org.springframework.data.repository.CrudRepository;
 
 public interface SeanceRepo extends CrudRepository<Seance, Long> {
+    Iterable<Seance> findByCinemas_Name(String name);
 }

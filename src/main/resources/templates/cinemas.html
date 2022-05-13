@@ -29,7 +29,7 @@
                 <p class="card-text" th:text="${el.text}"></p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <a class="btn btn-outline-secondary btn-lg text-white" href="/seance">Cеансы.</a>
+                        <a class="btn btn-outline-secondary btn-lg text-white" th:href="'/cinemas/' + ${el.name}">Cеансы.</a>
                     </div>
                 </div>
             </div>

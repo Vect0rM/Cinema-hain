@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>Сеансы</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+</head>
+<body class="d-flex h-100 text-center text-white bg-black">
+<header th:insert="blocks/header :: header"></header>
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <main class="mt-5 px-3">
+        <section class="py-5 text-center container">
+            <br>
+            <div class="row py-lg-5">
+                <div class="col-lg-6 col-md-8 mx-auto">
+                    <br>
+                    <br>
+                    <h1 class="fw-light">Сеансы</h1>
+                    <p class="lead text-white">В наших кинотеатрах, вы можете выбрать сеанс максимально подходящий для вашего расписания.</p>
+
+                </div>
+            </div>
+        </section>
+        <div th:each="el : ${seances}" class="container py-4 text-white" >
+            <div  class="mt-5 bg-dark p-5 mb-4 bg-light rounded-3">
+                <div class=" container-fluid py-5">
+                    <h1 th:text="${el.film}" class="display-5 fw-bold"></h1>
+                    <p th:text="'Время сеанса: ' + ${el.date}" class="col-md-8 fs-4"></p>
+                    <p th:text="'Номер зала: ' + ${el.hallNum}" class="col-md-8 fs-4"></p>
+                    <p class=" float-end text-decoration-none fs-5"><a class="btn btn-outline-secondary btn-lg text-white" th:href="'/cinemas/' + ${el.cinemas.name} + '/' + ${el.id}">К билетам.</a></p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <br>
+    <div th:insert="blocks/footerr :: footer"></div>
+</div>
+</body>
+</html>

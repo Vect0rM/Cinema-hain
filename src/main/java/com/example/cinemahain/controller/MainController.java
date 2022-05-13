@@ -29,7 +29,7 @@ public class MainController {
         model.addAttribute("films", films);
         return "films";
     }
-    @GetMapping("/workers")
+    @GetMapping("/admin")
     public String workers(Model model) {
         return "workers";
     }
