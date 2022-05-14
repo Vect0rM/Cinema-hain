@@ -94,11 +94,11 @@
             <span>Фильм</span>
         </div>
         <div sec:authorize="hasRole('USER')" class="name">
-            <h2 class="text-black fw-bold" name="user" th:text="${#authentication.getPrincipal().getUsername}"></h2>
+            <input type="text" name="user" th:value="${#authentication.getPrincipal().getUsername}" class="form-control text-black fw-bold" placeholder="Логин" required>
             <span>Владелец билета</span>
         </div>
         <div sec:authorize="!hasRole('USER')" class="name">
-            <input type="text" name="username1" class="form-control" id="username" placeholder="Логин" required>
+            <input type="text" name="user" class="form-control text-black fw-bold" placeholder="Логин" required>
             <span>Владелец билета</span>
         </div>
         <div class="seat">

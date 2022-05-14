@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>Администратор</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+</head>
+<body class="d-flex h-100 text-center">
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <br>
+            <br>
+            <h1 class="fw-light">Административная панель</h1>
+        </div>
+    </div>
+<main>
+    <div class="mt-5 row row-cols-1 row-cols-md-3 mb-3 text-center">
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                <div class="card-header py-3 text-white bg-secondary border-primary">
+                    <h4 class="my-0 fw-normal">Кинотеатры</h4>
+                </div>
+                <div class="card-body">
+                    <a href="/admin/cinemas" class="w-100 btn btn-lg btn-primary">Редактирование</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                <div class="card-header py-3 text-white bg-secondary border-primary">
+                    <h4 class="my-0 fw-normal">Фильмы</h4>
+                </div>
+                <div class="card-body">
+                    <a href="/admin/films" class="w-100 btn btn-lg btn-primary">Редактирование</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                <div class="card-header py-3 text-white bg-secondary border-primary">
+                    <h4 class="my-0 fw-normal">Сеансы</h4>
+                </div>
+                <div class="card-body">
+                    <a href="/admin/seances" class="w-100 btn btn-lg btn-primary">Редактирование</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-5 row row-cols-1 row-cols-md-3 mb-3 text-center">
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                <div class="card-header py-3 text-white bg-secondary border-primary">
+                    <h4 class="my-0 fw-normal">Залы</h4>
+                </div>
+                <div class="card-body">
+                    <a href="/admin/halls" class="w-100 btn btn-lg btn-primary">Редактирование</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                <div class="card-header py-3 text-white bg-secondary border-primary">
+                    <h4 class="my-0 fw-normal">Сотрудники</h4>
+                </div>
+                <div class="card-body">
+                    <a href="/admin/workers" class="w-100 btn btn-lg btn-primary">Редактирование</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                <div class="card-header py-3 text-white bg-secondary border-primary">
+                    <h4 class="my-0 fw-normal">Акции</h4>
+                </div>
+                <div class="card-body">
+                    <a href="/admin/promotions" class="w-100 btn btn-lg btn-primary">Редактирование</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-5 row row-cols-1 row-cols-md-3 mb-3 text-center">
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                <div class="card-header py-3 text-white bg-secondary border-primary">
+                    <h4 class="my-0 fw-normal">Клиенты</h4>
+                </div>
+                <div class="card-body">
+                    <a href="/admin/users" class="w-100 btn btn-lg btn-primary">Редактирование</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                <div class="card-header py-3 text-white bg-secondary border-primary">
+                    <h4 class="my-0 fw-normal">Билеты</h4>
+                </div>
+                <div class="card-body">
+                    <a href="/admin/tickets" class="w-100 btn btn-lg btn-primary">Редактирование</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</div>
+</body>
+</html>

@@ -28,16 +28,49 @@ public class User implements UserDetails {
 
     private String email;
 
-    @ManyToOne
-    private Ticket ticket;
+    @OneToMany
+    private Set<Ticket> ticket;
 
     private long num;
+
+    public User(String username) {
+        this.username = username;
+    }
 
     public User(String username, String password, String passwordConfirm, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
         this.roles = roles;
+    }
+
+    public User(String username, String password, String passwordConfirm, Set<Role> roles, Set<Ticket> ticket, long num) {
+        this.username = username;
+        this.password = password;
+        this.passwordConfirm = passwordConfirm;
+        this.roles = roles;
+        this.ticket = ticket;
+        this.num = num;
+    }
+
+    public User(String username, String password, String passwordConfirm, Set<Role> roles, Set<Ticket> ticket) {
+        this.username = username;
+        this.password = password;
+        this.passwordConfirm = passwordConfirm;
+        this.roles = roles;
+        this.ticket = ticket;
+    }
+
+    public User(String username, String password, String passwordConfirm, Set<Role> roles, String surname, String name, String email, Set<Ticket> ticket, long num) {
+        this.username = username;
+        this.password = password;
+        this.passwordConfirm = passwordConfirm;
+        this.roles = roles;
+        Surname = surname;
+        this.name = name;
+        this.email = email;
+        this.ticket = ticket;
+        this.num = num;
     }
 
     public User() {
@@ -134,11 +167,11 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public Ticket getTicket() {
+    public Set<Ticket> getTicket() {
         return ticket;
     }
 
-    public void setTicket(Ticket ticket) {
+    public void setTicket(Set<Ticket> ticket) {
         this.ticket = ticket;
     }
 
@@ -148,5 +181,8 @@ public class User implements UserDetails {
 
     public void setNum(long num) {
         this.num = num;
+    }
+
+    public void setTicket(Ticket ticket) {
     }
 }

@@ -55,6 +55,7 @@
                     <div class="col-12">
                         <label class="form-label">Подтвердите пароль</label>
                         <input type="text" class="form-control" name="passConf" required>
+
                         <div class="invalid-feedback">
                             Введите номер.
                         </div>
@@ -62,10 +63,20 @@
                 </div>
 
                 <hr class="my-4">
-
                 <button class="w-100 btn btn-secondary btn-lg" type="submit">Обновить</button>
             </div>
         </form>
+        <h1 class="text-white text-center">Билеты</h1>
+        <div th:each="el : ${ticket}" class="container py-4 text-white" >
+            <div  class="bg-black  bg-light">
+                <div class=" container-fluid py-5">
+                    <h1 th:text="'Фильм: ' + ${el.seance.film}" class="display-5 fw-bold"></h1>
+                    <p th:text="'Время: ' + ${el.seance.date}" class="col-md-8 fs-4"></p>
+                    <p th:text="'Номер зала: ' + ${el.seance.hallNum}" class="col-md-8 fs-4"></p>
+                    <p th:text="'Место:' + ${el.place}" class="col-md-8 fs-4"></p>
+                </div>
+            </div>
+        </div>
     </main>
 </div>
 <div th:insert="blocks/footerr :: footer"></div>

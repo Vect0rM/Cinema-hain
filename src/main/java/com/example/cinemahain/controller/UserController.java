@@ -1,6 +1,8 @@
 package com.example.cinemahain.controller;
 
+import com.example.cinemahain.models.Ticket;
 import com.example.cinemahain.models.User;
+import com.example.cinemahain.repository.TicketRepo;
 import com.example.cinemahain.repository.UserRepo;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,17 +13,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Set;
+
 @Controller
 public class UserController {
     private final UserRepo userRepo;
+    private final TicketRepo ticketRepo;
 
-    public UserController(UserRepo userRepo) {
+    public UserController(UserRepo userRepo, TicketRepo ticketRepo) {
         this.userRepo = userRepo;
+        this.ticketRepo = ticketRepo;
     }
 
   @GetMapping("/settings/{username}")
     public String User(@PathVariable(value = "username") String username, Model model) {
         User user = userRepo.findByUsername(username);
+        Iterable<Ticket> ticket = user.getTicket();
+      model.addAttribute("ticket", ticket);
         model.addAttribute("user", user);
         return "user";
     }

@@ -1,7 +1,6 @@
 package com.example.cinemahain.models;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 public class Ticket {
@@ -18,8 +17,8 @@ public class Ticket {
     @ManyToOne
     private Seance seance;
 
-    @OneToMany
-    private Set<User> users;
+    @ManyToOne
+    private User users;
 
     public Ticket() {
     }
@@ -64,11 +63,11 @@ public class Ticket {
         this.seance = seance;
     }
 
-    public Set<User> getUsers() {
+    public User getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(User users) {
         this.users = users;
     }
 }

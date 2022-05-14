@@ -29,10 +29,7 @@ public class MainController {
         model.addAttribute("films", films);
         return "films";
     }
-    @GetMapping("/admin")
-    public String workers(Model model) {
-        return "workers";
-    }
+
     @GetMapping("/promotions")
     public String promotions(Model model) {
         Iterable<Promotions> promotions = promotionsRepo.findAll();

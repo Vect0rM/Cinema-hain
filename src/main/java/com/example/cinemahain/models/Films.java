@@ -18,6 +18,19 @@ public class Films {
     public Films() {
     }
 
+    public Films(long id, String name, String text, String photoSrc) {
+        this.id = id;
+        this.name = name;
+        this.text = text;
+        this.photoSrc = photoSrc;
+    }
+
+    public Films(String name, String text, String photoSrc) {
+        this.name = name;
+        this.text = text;
+        this.photoSrc = photoSrc;
+    }
+
     public long getId() {
         return id;
     }

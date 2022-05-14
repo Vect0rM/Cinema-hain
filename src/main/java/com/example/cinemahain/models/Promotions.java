@@ -25,6 +25,11 @@ public class Promotions {
         this.text = text;
     }
 
+    public Promotions(String name, String text) {
+        this.name = name;
+        this.text = text;
+    }
+
     public long getId() {
         return id;
     }

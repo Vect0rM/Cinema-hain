@@ -18,10 +18,13 @@
                 </div>
 
                 <div sec:authorize="hasRole('USER')" class="text-end pe-sm-3">
-                    <a  sec:authentication="name" class="btn btn-outline-light me-2" th:href=" @{|~/settings/${#authentication.name}|}">Сотрудники</a>
+                    <a  sec:authentication="name" class="btn btn-outline-light me-2" th:href=" @{|~/settings/${#authentication.name}|}"></a>
                     <form class="btn" th:action="@{/logout}" method="post">
                         <input class=" btn-warning" type="submit" value="Выйти"/>
                     </form>
+                </div>
+                <div sec:authorize="hasRole('Admin')" class="text-end pe-sm-3">
+                    <a  class="btn btn-outline-light me-2" href="/admin">Админ панель</a>
                 </div>
             </div>
         </nav>
