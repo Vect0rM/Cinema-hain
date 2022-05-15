@@ -25,9 +25,10 @@
             <div  class="mt-5 bg-dark p-5 mb-4 bg-light rounded-3">
                 <div class=" container-fluid py-5">
                     <div class="row mb-3">
-                        <div th:each="el : ${tickets}" th:classappend="${el.reserve} ? 'bg-danger' : ''" class="col-4 themed-grid-col mt-3 btn btn-outline-secondary text-white ">
-                            <a class="text-white" th:text="'Место: ' + ${el.place}" th:href="'/cinemas/' + ${el.seance.cinemas.name} + '/' + ${el.seance.id} + '/' + ${el.id}"></a>
-                        <p class="mt-1" th:text="'Цена за билет: ' + ${el.price} + ' руб.'"></p></div>
+                        <div th:each="el : ${tickets}" th:classappend="${el.reserve} ? 'bg-danger' : ''" class="col-4 themed-grid-col mt-3 btn btn-outline-secondary text-white w-25 h-100">
+                            <a class="text-white" th:text="'Цена за билет: ' + ${el.price} + ' руб.'" th:href="'/cinemas/' + ${el.seance.cinemas.name} + '/' + ${el.seance.id} + '/' + ${el.id}"></a>
+                            <p class="mt-1"></p>
+                        </div>
                     </div>
                 </div>
             </div>

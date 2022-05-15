@@ -23,6 +23,23 @@ public class Cinemas {
     public Cinemas() {
     }
 
+    public Cinemas(String name, String photo, String city, String text, Set<Halls> halls, Set<Workers> workers, Set<Seance> seances) {
+        this.name = name;
+        this.photo = photo;
+        this.city = city;
+        this.text = text;
+        this.halls = halls;
+        this.workers = workers;
+        this.seances = seances;
+    }
+
+    public Cinemas(String name, String photo, String city, String text) {
+        this.name = name;
+        this.photo = photo;
+        this.city = city;
+        this.text = text;
+    }
+
     public long getId() {
         return id;
     }

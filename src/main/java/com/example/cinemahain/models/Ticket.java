@@ -23,6 +23,13 @@ public class Ticket {
     public Ticket() {
     }
 
+    public Ticket(long price, boolean reserve, long place, Seance seance) {
+        this.price = price;
+        this.reserve = reserve;
+        this.place = place;
+        this.seance = seance;
+    }
+
     public long getId() {
         return id;
     }

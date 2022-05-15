@@ -13,13 +13,20 @@ public class Seance {
 
     private String film, date;
 
-    @OneToMany
+    @OneToMany( cascade = {CascadeType.ALL})
     private Set<Ticket> tickets;
 
     @ManyToOne
     private Cinemas cinemas;
 
     public Seance() {
+    }
+
+    public Seance(long hallNum, String film, String date, Cinemas cinemas) {
+        this.hallNum = hallNum;
+        this.film = film;
+        this.date = date;
+        this.cinemas = cinemas;
     }
 
     public long getId() {

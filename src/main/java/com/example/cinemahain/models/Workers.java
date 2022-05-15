@@ -17,6 +17,14 @@ public class Workers {
     public Workers() {
     }
 
+    public Workers(String name, String photoSrc, String email, String password, Cinemas cinemas) {
+        this.name = name;
+        this.photoSrc = photoSrc;
+        this.email = email;
+        this.password = password;
+        this.cinemas = cinemas;
+    }
+
     public long getId() {
         return id;
     }

@@ -16,6 +16,11 @@ public class Halls {
     public Halls() {
     }
 
+    public Halls(long num, Cinemas cinemas) {
+        this.num = num;
+        this.cinemas = cinemas;
+    }
+
     public long getId() {
         return id;
     }

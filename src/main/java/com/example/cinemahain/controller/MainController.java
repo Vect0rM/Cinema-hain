@@ -2,8 +2,10 @@ package com.example.cinemahain.controller;
 
 import com.example.cinemahain.models.Films;
 import com.example.cinemahain.models.Promotions;
+import com.example.cinemahain.models.Workers;
 import com.example.cinemahain.repository.FilmsRepo;
 import com.example.cinemahain.repository.PromotionsRepo;
+import com.example.cinemahain.repository.WorkersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,9 @@ public class MainController {
 
     @Autowired
     private FilmsRepo filmsRepo;
+
+    @Autowired
+    private WorkersRepo workersRepo;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -36,5 +41,11 @@ public class MainController {
         model.addAttribute("promotions", promotions);
         return "promotions";
     }
+    /*  @GetMapping("/workers")
+    public String workers(Model model) {
+        Iterable<Workers> workers = workersRepo.findAll();
+        model.addAttribute("promotions", workers);
+        return "promotions";
+    }*/
 
 }
