@@ -10,6 +10,7 @@
                     <li><a href="/" class="nav-link px-2 text-white">Главная</a></li>
                     <li><a href="/films" class="nav-link px-2 text-white">Фильмы</a></li>
                     <li><a href="/promotions" class="nav-link px-2 text-white">Акции</a></li>
+                    <li sec:authorize="hasRole('Admin')"><a href="/admin" class="nav-link px-2 text-white">Админ панель</a></li>
                 </ul>
 
                 <div sec:authorize="!hasRole('USER')" class="text-end pe-sm-3">
@@ -22,9 +23,6 @@
                     <form class="btn" th:action="@{/logout}" method="post">
                         <input class=" btn-warning" type="submit" value="Выйти"/>
                     </form>
-                </div>
-                <div sec:authorize="hasRole('Admin')" class="text-end pe-sm-3">
-                    <a  class="btn btn-outline-light me-2" href="/admin">Админ панель</a>
                 </div>
             </div>
         </nav>

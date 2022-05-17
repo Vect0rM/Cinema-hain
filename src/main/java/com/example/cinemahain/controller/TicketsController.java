@@ -46,12 +46,12 @@ public class TicketsController {
         Ticket ticket = ticketRepo.findById(Tid).get();
         if (!userRepo.existsByUsername(user)) {
             User user2 = new User(user);
+            userRepo.save(user2);
             user2.setTicket(ticket);
-            user2.getTicket().add(ticket);
             ticket.setUsers(user2);
             ticket.setReserve(true);
-            userRepo.save(user2);
             ticketRepo.save(ticket);
+            userRepo.save(user2);
         } else {
         User user1 = userRepo.findByUsername(user);
         user1.setTicket(ticket);

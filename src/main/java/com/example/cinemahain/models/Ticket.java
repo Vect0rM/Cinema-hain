@@ -30,6 +30,7 @@ public class Ticket {
         this.seance = seance;
     }
 
+
     public long getId() {
         return id;
     }

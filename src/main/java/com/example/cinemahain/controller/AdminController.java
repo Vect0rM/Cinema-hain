@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
+import java.util.Set;
+
 
 @Controller
 public class AdminController {
@@ -117,32 +120,7 @@ public class AdminController {
         model.addAttribute("tickets", tickets);
         return "adminPanel/adminTickets";
     }
-    @PostMapping("/admin/tickets")
-    public String adminPanelTicketsPost(@RequestParam String prise, @RequestParam String place, @RequestParam String seance) {
 
-           Ticket ticket = new Ticket();
-            if (!prise.isEmpty()) {
-                ticket.setPrice(Long.parseLong(prise));
-            }
-            if (!place.isEmpty()) {
-                ticket.setPlace(Long.parseLong(place));
-            }
-            if (!seance.isEmpty()) {
-               Seance seance1 = seanceRepo.findById(Long.valueOf(seance)).get();
-               ticket.setSeance(seance1);
-            }
-            ticket.setReserve(false);
-            ticketRepo.save(ticket);
-        return "redirect:/admin";
-    }
-    @PostMapping("/admin/tickets/remove")
-    public String adminPanelTicketsRemove(@RequestParam String id) {
-        if (!id.isEmpty()) {
-            Ticket ticket = ticketRepo.findById(Long.valueOf(id)).get();
-            ticketRepo.delete(ticket);
-        }
-        return "redirect:/admin";
-    }
     @GetMapping("/admin/workers")
     public String adminPanelWorkers(Model model) {
         Iterable<Workers> workers = workersRepo.findAll();
@@ -156,6 +134,9 @@ public class AdminController {
         if (id.isEmpty()) {
             Cinemas cinemas = cinemasRepo.findById(Long.valueOf(cinema)).get();
            workers = new Workers(name, photoSrc, email, passwordEncoder.encode(pass), cinemas);
+           workersRepo.save(workers);
+           cinemas.getWorkers().add(workers);
+           cinemasRepo.save(cinemas);
         } else {
             workers = workersRepo.findById(Long.valueOf(id)).get();
             if (!name.isEmpty()) {
@@ -173,6 +154,8 @@ public class AdminController {
             if (!cinema.isEmpty()) {
                 Cinemas cinemas = cinemasRepo.findById(Long.valueOf(cinema)).get();
                 workers.setCinemas(cinemas);
+                cinemas.getWorkers().add(workers);
+                cinemasRepo.save(cinemas);
             }
         }
         workersRepo.save(workers);
@@ -181,8 +164,11 @@ public class AdminController {
     @PostMapping("/admin/workers/remove")
     public String adminPanelWorkersRemove(@RequestParam String id) {
         if (!id.isEmpty()) {
-            Workers workers = workersRepo.findById(Long.valueOf(id)).get();
-            workersRepo.delete(workers);
+           Workers workers = workersRepo.findById(Long.valueOf(id)).get();
+           Cinemas cinemas = workers.getCinemas();
+           cinemas.getWorkers().remove(workers);
+           cinemasRepo.save(cinemas);
+           workersRepo.delete(workers);
         }
         return "redirect:/admin";
     }
@@ -198,6 +184,9 @@ public class AdminController {
         if (id.isEmpty()) {
             Cinemas cinemas = cinemasRepo.findById(Long.valueOf(cinema)).get();
             halls = new Halls(Long.parseLong(num), cinemas);
+            hallsRepo.save(halls);
+            cinemas.getHalls().add(halls);
+            cinemasRepo.save(cinemas);
         } else {
             halls = hallsRepo.findById(Long.valueOf(id)).get();
             if (!num.isEmpty()) {
@@ -207,6 +196,8 @@ public class AdminController {
             if (!cinema.isEmpty()) {
                 Cinemas cinemas = cinemasRepo.findById(Long.valueOf(cinema)).get();
                 halls.setCinemas(cinemas);
+                cinemas.getHalls().add(halls);
+                cinemasRepo.save(cinemas);
             }
         }
         hallsRepo.save(halls);
@@ -216,6 +207,9 @@ public class AdminController {
     public String adminPanelHallsRemove(@RequestParam String id) {
         if (!id.isEmpty()) {
             Halls halls = hallsRepo.findById(Long.valueOf(id)).get();
+            Cinemas cinemas = halls.getCinemas();
+            cinemas.getHalls().remove(halls);
+            cinemasRepo.save(cinemas);
             hallsRepo.delete(halls);
         }
         return "redirect:/admin";
@@ -246,30 +240,46 @@ public class AdminController {
         cinemasRepo.save(cinemas);
         return "redirect:/admin";
     }
-    @PostMapping("/admin/cinema/add")
-    public String AdminPanelCinemaAdd(@RequestParam String id,@RequestParam String hall, @RequestParam String worker,  @RequestParam String seance){
-        if (id.isEmpty()) {
+    @PostMapping("/admin/cinemas/add")
+    public String AdminPanelCinemaAdd(@RequestParam String id,@RequestParam String hall){
+        if (!id.isEmpty()) {
             Cinemas cinemas = cinemasRepo.findById(Long.parseLong(id)).get();
             if (!hall.isEmpty()) {
-                Halls halls = hallsRepo.findById(Long.parseLong(hall)).get();
-                cinemas.getHalls().add(halls);
-            }
-            if (!worker.isEmpty()) {
-                Workers workers = workersRepo.findById(Long.parseLong(worker)).get();
-                cinemas.getWorkers().add(workers);
-            }
-            if (!seance.isEmpty()) {
-                Seance seance1 = seanceRepo.findById(Long.parseLong(seance)).get();
-                cinemas.getSeances().add(seance1);
+                for (int i = 1; i < Integer.parseInt(hall) + 1; i++) {
+                    Halls halls = new Halls(i, cinemas);
+                    hallsRepo.save(halls);
+                    cinemas.getHalls().add(halls);
+                }
             }
             cinemasRepo.save(cinemas);
         }
         return "redirect:/admin";
     }
+
     @PostMapping("/admin/cinemas/remove")
     public String adminPanelCinemasRemove(@RequestParam String id) {
         if (!id.isEmpty()) {
             Cinemas cinemas = cinemasRepo.findById(Long.valueOf(id)).get();
+            Set <Halls> halls = cinemas.getHalls();
+            Set<Workers> workers = cinemas.getWorkers();
+            Set<Seance> seances = cinemas.getSeances();
+            cinemas.getSeances().removeAll(seances);
+            cinemas.getWorkers().removeAll(workers);
+            cinemas.getHalls().removeAll(halls);
+            for (Seance s:
+                 seances) {
+                Set<Ticket> tickets = s.getTickets();
+                for (Ticket t:
+                     tickets) {
+                    User user = t.getUsers();
+                    user.getTicket().remove(t);
+                    userRepo.save(user);
+                    ticketRepo.delete(t);
+                }
+            }
+            seanceRepo.deleteAll(seanceRepo.findByCinemas_Name(cinemas.getName()));
+            hallsRepo.deleteAll(hallsRepo.findHallsByCinemasId(cinemas.getId()));
+            workersRepo.deleteAll(workersRepo.findWorkersByCinemasId(cinemas.getId()));
             cinemasRepo.delete(cinemas);
         }
         return "redirect:/admin";
@@ -286,11 +296,16 @@ public class AdminController {
         if (id.isEmpty()) {
             Cinemas cinemas = cinemasRepo.findById(Long.parseLong(cinema)).get();
             seance = new Seance(Long.parseLong(hall), film, date, cinemas);
+            seanceRepo.save(seance);
+            cinemas.getSeances().add(seance);
+            cinemasRepo.save(cinemas);
         } else {
             seance = seanceRepo.findById(Long.valueOf(id)).get();
             if (!cinema.isEmpty()) {
                 Cinemas cinemas = cinemasRepo.findById(Long.parseLong(cinema)).get();
                 seance.setCinemas(cinemas);
+                cinemas.getSeances().add(seance);
+                cinemasRepo.save(cinemas);
             }
             if (!date.isEmpty()) {
                 seance.setDate(date);
@@ -321,6 +336,20 @@ public class AdminController {
     public String adminPanelSeanceRemove(@RequestParam String id) {
         if (!id.isEmpty()) {
             Seance seance = seanceRepo.findById(Long.valueOf(id)).get();
+            Cinemas cinemas = seance.getCinemas();
+            cinemas.getSeances().remove(seance);
+            cinemasRepo.save(cinemas);
+            Set<Ticket> tickets = seance.getTickets();
+            for (Ticket t:
+                 tickets) {
+                if (t.isReserve()) {
+                    User user = t.getUsers();
+                    user.getTicket().remove(t);
+                    userRepo.save(user);
+                }
+            }
+            seance.getTickets().removeAll(Collections.singleton(ticketRepo.findTicketBySeanceId(Long.parseLong(id))));
+            ticketRepo.deleteAll(tickets);
             seanceRepo.delete(seance);
         }
         return "redirect:/admin";

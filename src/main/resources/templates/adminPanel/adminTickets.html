@@ -19,39 +19,6 @@
             <div th:text="'Место: ' + ${el.place}" class="p-2 bd-highlight me-5"></div>
             <div th:text="'Кинотеатр: ' + ${el.seance.cinemas.name}" class="p-2 bd-highlight me-5"></div>
         </div>
-        <div class="py-2 text-center ">
-            <h2>Добавить билеты в кинотеатры</h2>
-        </div>
-        <form method="post" class="needs-validation" novalidate>
-            <div class="py-5">
-                <div class="row g-3">
-                    <div class="col-12">
-                        <label class="form-label">Цена</label>
-                        <input type="email" class="form-control" name="prise">
-                    </div>
-
-                    <div class="col-12">
-                        <label class="form-label">Место</label>
-                        <input type="text" class="form-control"  name="place" required>
-
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label">Сеанс</label>
-                        <input type="text" class="form-control" name="seance" required>
-                    </div>
-                </div>
-
-                <hr class="my-4">
-                <button class="w-100 btn btn-secondary btn-lg" type="submit">Добавить</button>
-            </div>
-        </form>
-        <form method="post" action="/admin/tickets/remove">
-            <div class="col-sm-6">
-                <label class="form-label">Id(Которую хотите удалить)</label>
-                <input type="text" class="form-control"  name="id"  required>
-            </div>
-            <button class="mt-5 w-100 btn btn-secondary btn-lg" type="submit">Удалить</button>
-        </form>
     </main>
 </div>
 </body>

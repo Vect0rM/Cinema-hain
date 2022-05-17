@@ -28,7 +28,7 @@ public class User implements UserDetails {
 
     private String email;
 
-    @OneToMany
+    @OneToMany( orphanRemoval = true)
     private Set<Ticket> ticket;
 
     private long num;
@@ -183,6 +183,6 @@ public class User implements UserDetails {
         this.num = num;
     }
 
-    public void setTicket(Ticket ticket) {
+    public void setTicket(Ticket    ticket) {
     }
 }

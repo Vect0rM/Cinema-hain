@@ -1,6 +1,7 @@
 package com.example.cinemahain.models;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.Set;
 
 @Entity
@@ -68,7 +69,9 @@ public class Seance {
     public void setTickets(Set<Ticket> tickets) {
         this.tickets = tickets;
     }
-
+    public void setTickets(Ticket tickets) {
+        this.tickets = Collections.singleton(tickets);
+    }
     public Cinemas getCinemas() {
         return cinemas;
     }
