@@ -17,23 +17,24 @@
                     <br>
                     <h1 class="fw-light">Сеансы</h1>
                     <p class="lead text-white">В наших кинотеатрах, вы можете выбрать сеанс максимально подходящий для вашего расписания.</p>
-
                 </div>
             </div>
         </section>
-        <div th:each="el : ${seances}" class="container py-4 text-white" >
+        <div sec:authorize="hasRole('USER')">
+            <h2 class="text-warning text-start" th:text="${rec}"></h2>
+        </div>
+        <div th:each="el : ${seances}" class="container py-4 text-white w-75 ">
             <div  class="mt-5 bg-dark p-5 mb-4 bg-light rounded-3">
                 <div class=" container-fluid py-5">
                     <h1 th:text="${el.film}" class="display-5 fw-bold"></h1>
-                    <p th:text="'Время сеанса: ' + ${el.date}" class="col-md-8 fs-4"></p>
-                    <p th:text="'Номер зала: ' + ${el.hallNum}" class="col-md-8 fs-4"></p>
+                    <p th:text="'Время сеанса: ' + ${el.date}" class="text-start fs-4"></p>
+                    <p th:text="'Номер зала: ' + ${el.hallNum}" class="text-start fs-4"></p>
                     <p class=" float-end text-decoration-none fs-5"><a class="btn btn-outline-secondary btn-lg text-white" th:href="'/cinemas/' + ${el.cinemas.name} + '/' + ${el.id}">К билетам.</a></p>
                 </div>
             </div>
         </div>
     </main>
     <br>
-
     <div th:insert="blocks/footerr :: footer"></div>
 </div>
 </body>

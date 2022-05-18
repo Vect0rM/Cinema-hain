@@ -55,7 +55,6 @@ public class TicketsController {
         ticket.setUsers(user1);
         ticket.setReserve(true);
         ticketRepo.save(ticket);
-
         }
         return "redirect:/cinemas/{name}/{id}";
     }

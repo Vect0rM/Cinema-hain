@@ -20,9 +20,9 @@
             </div>
         </div>
     </section>
-    <div th:each="el : ${cinemas}" class="container-sm">
+    <div th:each="el : ${cinemas}" class="container-sm w-50 h-50">
         <div class=" card bg-dark">
-            <img class="bd-placeholder-img card-img-top"  th:src="${el.photo}" >
+            <img class="bd-placeholder-img card-img-top w-50 h-50"  th:src="${el.photo}" >
             <div class="card-body">
                 <p class="card-text" th:text="${el.city}"></p>
                 <p class="card-text" th:text="'Залов: ' + ${el.halls.size()}"></p>
