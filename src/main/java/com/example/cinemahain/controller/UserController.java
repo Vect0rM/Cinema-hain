@@ -2,7 +2,6 @@ package com.example.cinemahain.controller;
 
 import com.example.cinemahain.models.Ticket;
 import com.example.cinemahain.models.User;
-import com.example.cinemahain.repository.TicketRepo;
 import com.example.cinemahain.repository.UserRepo;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,19 +11,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Set;
-
+//Контроллер личного кабинета пользователя
 @Controller
 public class UserController {
     private final UserRepo userRepo;
-    private final TicketRepo ticketRepo;
-
-    public UserController(UserRepo userRepo, TicketRepo ticketRepo) {
+    //Конструктор
+    public UserController(UserRepo userRepo) {
         this.userRepo = userRepo;
-        this.ticketRepo = ticketRepo;
     }
-
+    //Страница личного кабинета
   @GetMapping("/settings/{username}")
     public String User(@PathVariable(value = "username") String username, Model model) {
         User user = userRepo.findByUsername(username);
@@ -33,6 +28,7 @@ public class UserController {
         model.addAttribute("user", user);
         return "user";
     }
+    //Обработка изменений пост запросом
     @PostMapping("/settings/{username}")
     public String UserEdit(@PathVariable(value = "username") String username, Model model, @RequestParam String surname, @RequestParam String name, @RequestParam String email,@RequestParam long num,@RequestParam String username1, @RequestParam String pass, @RequestParam String passConf) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Collections;
 import java.util.Set;
 
-
+//Контроллер панели администратора
 @Controller
 public class AdminController {
 
@@ -25,7 +25,7 @@ public class AdminController {
     final private WorkersRepo workersRepo;
     final private CinemasRepo cinemasRepo;
     final private HallsRepo hallsRepo;
-
+    //Конструктор с репозиториями
     public AdminController(FilmsRepo filmsRepo, PromotionsRepo promotionsRepo, UserRepo userRepo, TicketRepo ticketRepo, SeanceRepo seanceRepo, WorkersRepo workersRepo, CinemasRepo cinemasRepo, HallsRepo hallsRepo) {
         this.filmsRepo = filmsRepo;
         this.promotionsRepo = promotionsRepo;
@@ -36,17 +36,19 @@ public class AdminController {
         this.cinemasRepo = cinemasRepo;
         this.hallsRepo = hallsRepo;
     }
-
+    //Страница админ панели
     @GetMapping("/admin")
     public String adminPanel() {
         return "admin";
     }
+    //Страница редактирования фильмов
     @GetMapping("/admin/films")
     public String adminPanelFilms(Model model) {
         Iterable<Films> films = filmsRepo.findAll();
         model.addAttribute("films", films);
         return "adminPanel/adminFilms";
     }
+    //Редактирование/добавление фильма пост запросом
     @PostMapping("/admin/films")
     public String adminPanelFilmsPost(@RequestParam String id, @RequestParam String name, @RequestParam String photoSrc, @RequestParam String text) {
         Films film;
@@ -67,6 +69,7 @@ public class AdminController {
         filmsRepo.save(film);
         return "redirect:/admin";
     }
+    //Удаление фильма пост запросом
     @PostMapping("/admin/films/remove")
     public String adminPanelFilmsRemove(@RequestParam String id) {
         if (!id.isEmpty()) {
@@ -75,12 +78,14 @@ public class AdminController {
         }
         return "redirect:/admin";
     }
+    //Страница редактирования акций
     @GetMapping("/admin/promotions")
     public String adminPanelPromotions(Model model) {
         Iterable<Promotions> promotions = promotionsRepo.findAll();
         model.addAttribute("promotions", promotions);
         return "adminPanel/adminPromotions";
     }
+    //Редактирование/добавление акций пост запросом
     @PostMapping("/admin/promotions")
     public String adminPanelPromotionsPost(@RequestParam String id, @RequestParam String name, @RequestParam String text) {
         Promotions promotions;
@@ -98,7 +103,7 @@ public class AdminController {
         promotionsRepo.save(promotions);
         return "redirect:/admin";
     }
-
+    //Удаление акций пост запросом
     @PostMapping("/admin/promotions/remove")
     public String adminPanelPromotionsRemove(@RequestParam String id) {
         if (!id.isEmpty()) {
@@ -107,26 +112,28 @@ public class AdminController {
         }
         return "redirect:/admin";
     }
-
+    //Страница выдачи пользователей
     @GetMapping("/admin/users")
     public String adminPanelUsers(Model model) {
         Iterable<User> users = userRepo.findAll();
         model.addAttribute("users", users);
         return "adminPanel/adminUsers";
     }
+    //Страница выдачи проданных билетов
     @GetMapping("/admin/tickets")
     public String adminPanelTickets(Model model) {
         Iterable<Ticket> tickets = ticketRepo.findAll();
         model.addAttribute("tickets", tickets);
         return "adminPanel/adminTickets";
     }
-
+    //Страница редактирования сотрудников
     @GetMapping("/admin/workers")
     public String adminPanelWorkers(Model model) {
         Iterable<Workers> workers = workersRepo.findAll();
         model.addAttribute("workers", workers);
         return "adminPanel/adminWorkers";
     }
+    //Редактирование/добавление сотрудников пост запросом
     @PostMapping("/admin/workers")
     public String adminPanelWorkersPost(@RequestParam String id, @RequestParam String name, @RequestParam String photoSrc, @RequestParam String email, @RequestParam String pass, @RequestParam String cinema) {
         Workers workers;
@@ -161,6 +168,7 @@ public class AdminController {
         workersRepo.save(workers);
         return "redirect:/admin";
     }
+    //Удаление сотрудника пост запросом
     @PostMapping("/admin/workers/remove")
     public String adminPanelWorkersRemove(@RequestParam String id) {
         if (!id.isEmpty()) {
@@ -172,12 +180,14 @@ public class AdminController {
         }
         return "redirect:/admin";
     }
+    //Страница редактирования залов
     @GetMapping("/admin/halls")
     public String adminPanelHalls(Model model) {
         Iterable<Halls> halls = hallsRepo.findAll();
         model.addAttribute("halls", halls);
         return "adminPanel/adminHalls";
     }
+    //Редактирование/добавление залов пост запросом
     @PostMapping("/admin/halls")
     public String adminPanelHallsPost(@RequestParam String id, @RequestParam String num, @RequestParam String cinema) {
         Halls halls;
@@ -203,6 +213,7 @@ public class AdminController {
         hallsRepo.save(halls);
         return "redirect:/admin";
     }
+    //Удаление залов пост запросом
     @PostMapping("/admin/halls/remove")
     public String adminPanelHallsRemove(@RequestParam String id) {
         if (!id.isEmpty()) {
@@ -214,12 +225,14 @@ public class AdminController {
         }
         return "redirect:/admin";
     }
+    //Страница редактирования кинотеатров
     @GetMapping("/admin/cinemas")
     public String adminPanelCinemas(Model model) {
         Iterable<Cinemas> cinemas = cinemasRepo.findAll();
         model.addAttribute("cinemas", cinemas);
         return "adminPanel/adminCinemas";
     }
+    //Редактирование/добавление кинотеатров пост запросом
     @PostMapping("/admin/cinemas")
     public String adminPanelCinemasPost(@RequestParam String id, @RequestParam String name, @RequestParam String photo, @RequestParam String text,  @RequestParam String city) {
         Cinemas cinemas;
@@ -240,6 +253,7 @@ public class AdminController {
         cinemasRepo.save(cinemas);
         return "redirect:/admin";
     }
+    //Добавить залы кинотеатру пост запросом
     @PostMapping("/admin/cinemas/add")
     public String AdminPanelCinemaAdd(@RequestParam String id,@RequestParam String hall){
         if (!id.isEmpty()) {
@@ -255,7 +269,7 @@ public class AdminController {
         }
         return "redirect:/admin";
     }
-
+    //Удаление кмнотеатра пост запросом
     @PostMapping("/admin/cinemas/remove")
     public String adminPanelCinemasRemove(@RequestParam String id) {
         if (!id.isEmpty()) {
@@ -284,12 +298,14 @@ public class AdminController {
         }
         return "redirect:/admin";
     }
+    //Страница редактирования сеансов
     @GetMapping("/admin/seances")
     public String adminPanelSeances(Model model) {
         Iterable<Seance> seances = seanceRepo.findAll();
         model.addAttribute("seances", seances);
         return "adminPanel/adminSeances";
     }
+    //Редактирование/добавление сеансов пост запросом
     @PostMapping("/admin/seances")
     public String adminPanelSeancePost(@RequestParam String id, @RequestParam String cinema, @RequestParam String date, @RequestParam String film, @RequestParam String hall) {
         Seance seance;
@@ -320,6 +336,7 @@ public class AdminController {
         seanceRepo.save(seance);
         return "redirect:/admin";
     }
+    //добавить билеты сеансу пост запросом
     @PostMapping("/admin/seances/add")
     public String AdminPanelSeanceAdd(@RequestParam String id,@RequestParam String amount, @RequestParam String prise){
         if (!amount.isEmpty() && !prise.isEmpty() && !id.isEmpty()) {
@@ -332,6 +349,7 @@ public class AdminController {
         }
         return "redirect:/admin";
     }
+    //Удаление фильма сеанса запросом
     @PostMapping("/admin/seances/remove")
     public String adminPanelSeanceRemove(@RequestParam String id) {
         if (!id.isEmpty()) {

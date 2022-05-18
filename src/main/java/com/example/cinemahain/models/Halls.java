@@ -2,14 +2,14 @@ package com.example.cinemahain.models;
 
 import javax.persistence.*;
 import java.util.Set;
-
+//Модель представления данных залов для бд
 @Entity
 public class Halls {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private long num;
-
+    //Связь с конотеатрами
     @ManyToOne
     private Cinemas cinemas;
 

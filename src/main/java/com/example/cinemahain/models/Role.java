@@ -4,7 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Set;
-
+//Модель представления данных ролей для бд
 @Entity
 @Table(name = "role")
 public class Role implements GrantedAuthority {

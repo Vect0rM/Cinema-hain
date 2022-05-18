@@ -1,8 +1,8 @@
 package com.example.cinemahain.models;
 
 import javax.persistence.*;
-import java.util.Set;
 
+//Модель представления данных Сотрудников для бд
 @Entity
 public class Workers {
     @Id
@@ -10,7 +10,7 @@ public class Workers {
     private long id;
 
     private String name, photoSrc, email, password;
-
+    //Связь с кинотеатрами
     @ManyToOne
     private Cinemas cinemas;
 

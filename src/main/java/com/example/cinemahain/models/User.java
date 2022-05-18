@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
-
+//Модель представления данных пользователей(имплементированная от UserDetails) для бд
 @Entity
 @Table(name = "user")
 public class User implements UserDetails {
@@ -20,6 +20,7 @@ public class User implements UserDetails {
     private String password;
     @Transient
     private String passwordConfirm;
+    //Связь с ролями
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
@@ -27,7 +28,7 @@ public class User implements UserDetails {
     private String name;
 
     private String email;
-
+    //Связь с билетами
     @OneToMany( orphanRemoval = true)
     private Set<Ticket> ticket;
 

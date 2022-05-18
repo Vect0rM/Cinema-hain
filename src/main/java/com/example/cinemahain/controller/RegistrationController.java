@@ -11,21 +11,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
-
+//Контроллер регистрации
 @Controller
 public class RegistrationController {
     
     private final UserRepo userRepo;
-
+    //Конструктор с репозиторием пользователя
     public RegistrationController(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
-
+    //Страница регистрации
     @GetMapping("/registration")
     public String registration(){
         return "registration";
     }
-
+    //Обработка регистрации пост запросом
     @PostMapping("/registration")
     public String registrationUser(@RequestParam String username, @RequestParam String password){
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

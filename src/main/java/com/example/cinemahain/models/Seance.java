@@ -3,7 +3,7 @@ package com.example.cinemahain.models;
 import javax.persistence.*;
 import java.util.Collections;
 import java.util.Set;
-
+//Модель представления данных сеансов для бд
 @Entity
 public class Seance {
     @Id
@@ -13,10 +13,10 @@ public class Seance {
     private long hallNum;
 
     private String film, date;
-
+    //Связь с билетами
     @OneToMany( cascade = {CascadeType.ALL})
     private Set<Ticket> tickets;
-
+    //Связь с кинотеатрами
     @ManyToOne
     private Cinemas cinemas;
 

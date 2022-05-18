@@ -3,6 +3,7 @@ package com.example.cinemahain.models;
 import javax.persistence.*;
 import java.util.Set;
 
+//Модель представления данных кинотеатров для бд
 @Entity
 public class Cinemas {
     @Id
@@ -10,13 +11,13 @@ public class Cinemas {
     private long id;
 
     private String name, photo, city, text;
-
+    //Связь с залами
     @OneToMany
     private Set<Halls> halls;
-
+    //Связь с сотрудниками
     @OneToMany
     private Set<Workers> workers;
-
+    //Связь с сеансами
     @OneToMany
     private Set<Seance> seances;
 

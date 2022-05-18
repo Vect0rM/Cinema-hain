@@ -1,7 +1,7 @@
 package com.example.cinemahain.models;
 
 import javax.persistence.*;
-
+//Модель представления данных билетов для бд
 @Entity
 public class Ticket {
     @Id
@@ -13,10 +13,10 @@ public class Ticket {
     private boolean reserve;
 
     private long place;
-
+    //Связь с сеансами
     @ManyToOne
     private Seance seance;
-
+    //Связь с пользователями
     @ManyToOne
     private User users;
 
