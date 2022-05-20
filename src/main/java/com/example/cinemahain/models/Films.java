@@ -23,6 +23,10 @@ public class Films {
     public Films() {
     }
 
+    public Films(String name) {
+        this.name = name;
+    }
+
     public Films(long id, String name, String text, String photoSrc) {
         this.id = id;
         this.name = name;

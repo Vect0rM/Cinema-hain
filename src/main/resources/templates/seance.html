@@ -20,8 +20,8 @@
                 </div>
             </div>
         </section>
-        <div sec:authorize="hasRole('USER')">
-            <h2 class="text-warning text-start">Фильм который вам может понравится: <a th:href="'/films/' + ${rec.name}" th:text="${rec.name}"></a></h2>
+        <div sec:authorize="hasRole('USER')" th:if="${rec != 'ErroR'}">
+            <h2 class="text-warning text-start">Фильм который вам может понравиться: <a class="text-white" th:href="'/films/' + ${rec.name}" th:text="${rec.name}"></a></h2>
         </div>
         <div th:each="el : ${seances}" class="container text-white w-75 ">
             <div  class="mt-3 bg-dark mb-4 bg-light rounded-3">
@@ -34,7 +34,7 @@
                         <h1 th:text="${el.films.name}" class="text-center display-5 fw-bold"></h1>
                         <br>
                         <br>
-                            <p th:text="'Время сеанса: ' + ${el.date}" class=" text-start fs-4"></p>
+                            <p th:text="'Дата и время сеанса: ' + ${el.date}" class=" text-start fs-4"></p>
                             <p th:text="'Номер зала: ' + ${el.hallNum}" class="text-start fs-4"></p>
                         <p class="text-end text-decoration-none fs-5"><a class=" btn btn-outline-secondary btn-lg text-white" th:href="'/cinemas/' + ${el.cinemas.name} + '/' + ${el.id}">К билетам.</a></p>
 

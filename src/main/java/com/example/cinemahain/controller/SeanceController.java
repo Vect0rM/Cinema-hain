@@ -60,14 +60,38 @@ public class SeanceController {
     }
     //рекомендации
     Films recommendation(Set<Ticket> ticket){
-        String topGenre = "";
+        StringBuilder topGenre = new StringBuilder();
         for (Ticket t:
              ticket) {
-            topGenre = topGenre + t.getSeance().getFilms().getGenres().getName() + " ";
+            topGenre.append(t.getSeance().getFilms().getGenres().getName()).append(" ");
         }
-        Genres genres = genresRepo.findByName(mainGenre(topGenre));
+        Genres genres = genresRepo.findByName(mainGenre(topGenre.toString()));
         Set<Films> films = genres.getFilms();
-        return films.stream().findFirst().orElseThrow();
+        StringBuilder genresFilms = new StringBuilder();
+        for (Films f :
+                films) {
+            genresFilms.append(f.getName()).append("&&");
+        }
+        for (Ticket t:
+             ticket) {
+            if (t.getSeance().getFilms().getGenres().getName().equals(genres.getName())) {
+                genresFilms = new StringBuilder(genresFilms.toString().replace(t.getSeance().getFilms().getName(), ""));
+            }
+        }
+        Films film;
+        String[] films1 = genresFilms.toString().split("&&");
+        if (films1.length != 0) {
+            for (String s :
+                    films1) {
+                if (!s.isEmpty()) {
+                    film = filmsRepo.findByName(s);
+                    return film;
+                }
+            }
+        } else {
+            return new Films("ErroR");
+        }
+        return new Films("ErroR");
     }
     //Страница сеансов
     @GetMapping("/cinemas/{name}")
@@ -76,9 +100,14 @@ public class SeanceController {
         User user = userRepo.findByUsername(getCurrentUsername());
         if (user != null ) {
             if (user.getTicket() != null && !user.getTicket().isEmpty()) {
-                if (!recommendation(user.getTicket()).getName().isBlank()) {
-                    model.addAttribute("rec", recommendation(user.getTicket()));
+                if (!recommendation(user.getTicket()).getName().equals("ErroR")) {
+                    Films films = recommendation(user.getTicket());
+                    model.addAttribute("rec", films);
+                } else {
+                    model.addAttribute("rec", "ErroR");
                 }
+            } else {
+                model.addAttribute("rec", "ErroR");
             }
         }
         model.addAttribute("seances", seances);
