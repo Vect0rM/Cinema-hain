@@ -1,10 +1,8 @@
 package com.example.cinemahain.controller;
 
-import com.example.cinemahain.models.Films;
-import com.example.cinemahain.models.Seance;
-import com.example.cinemahain.models.Ticket;
-import com.example.cinemahain.models.User;
+import com.example.cinemahain.models.*;
 import com.example.cinemahain.repository.FilmsRepo;
+import com.example.cinemahain.repository.GenresRepo;
 import com.example.cinemahain.repository.SeanceRepo;
 import com.example.cinemahain.repository.UserRepo;
 import org.springframework.security.core.Authentication;
@@ -14,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Arrays;
 import java.util.Set;
 
 //Контроллер страницы сеансов
@@ -23,30 +22,52 @@ public class SeanceController {
     private final SeanceRepo seanceRepo;
     private final UserRepo userRepo;
     private final FilmsRepo filmsRepo;
+    private final GenresRepo genresRepo;
     // Констурктор с репозиториями сеансов
-    public SeanceController(SeanceRepo seanceRepo, UserRepo userRepo, FilmsRepo filmsRepo) {
+    public SeanceController(SeanceRepo seanceRepo, UserRepo userRepo, FilmsRepo filmsRepo, GenresRepo genresRepo) {
         this.seanceRepo = seanceRepo;
         this.userRepo = userRepo;
         this.filmsRepo = filmsRepo;
+        this.genresRepo = genresRepo;
     }
     public String getCurrentUsername() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
     }
+    String mainGenre(String st){
+        String[] arr = st.split(" ");
+        Arrays.sort(arr);
+        String genre = "", word = "";
+        int maxCount = 0, count = 1;
+
+        for (String s : arr) {
+            if (s.equals(word)) {
+                count++;
+            } else {
+                if (count > maxCount) {
+                    maxCount = count;
+                    genre = word;
+                }
+                word = s;
+                count = 1;
+            }
+        }
+
+        if (count >= maxCount) {
+            genre = word;
+        }
+        return genre;
+    }
     //рекомендации
-    String recommendation(Set<Ticket> ticket){
-        Iterable<Films> films = filmsRepo.findAll();
-        String s = "";
-        for (Films f:
-                films) {
-            s = s + f.getName() + " ";
-        }
+    Films recommendation(Set<Ticket> ticket){
+        String topGenre = "";
         for (Ticket t:
-                ticket) {
-            s = s.replace(t.getSeance().getFilm(), "%%");
+             ticket) {
+            topGenre = topGenre + t.getSeance().getFilms().getGenres().getName() + " ";
         }
-        String[] rec = s.split("%% ");
-        return "Фильм который вам может понравится: " + rec[1];
+        Genres genres = genresRepo.findByName(mainGenre(topGenre));
+        Set<Films> films = genres.getFilms();
+        return films.stream().findFirst().orElseThrow();
     }
     //Страница сеансов
     @GetMapping("/cinemas/{name}")
@@ -55,7 +76,7 @@ public class SeanceController {
         User user = userRepo.findByUsername(getCurrentUsername());
         if (user != null ) {
             if (user.getTicket() != null && !user.getTicket().isEmpty()) {
-                if (!recommendation(user.getTicket()).isBlank()) {
+                if (!recommendation(user.getTicket()).getName().isBlank()) {
                     model.addAttribute("rec", recommendation(user.getTicket()));
                 }
             }

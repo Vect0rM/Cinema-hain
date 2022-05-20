@@ -18,9 +18,11 @@
       <div class="col-md-7 text-white">
         <h2 th:text="${el.name}" class="featurette-heading"></h2>
         <p th:text="${el.text}" class="lead"></p>
+        <p th:text="'Жанр: ' + ${el.genres.name}" class="lead"></p>
         <br>
         <br>
         <a class="btn btn-outline-secondary btn-lg " href="/cinemas">Сходить в кино!</a>
+        <a class="m-5 btn btn-outline-secondary btn-lg " th:href="'/films/' + ${el.name}">Посмотреть сеансы.</a>
       </div>
       <div class="col-md-5">
         <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" height="500" aria-label="Placeholder: 500x500" th:src="${el.photoSrc}" width="100%">

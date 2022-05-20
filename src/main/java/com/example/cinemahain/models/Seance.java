@@ -12,7 +12,7 @@ public class Seance {
 
     private long hallNum;
 
-    private String film, date;
+    private String date;
     //Связь с билетами
     @OneToMany( cascade = {CascadeType.ALL})
     private Set<Ticket> tickets;
@@ -20,12 +20,29 @@ public class Seance {
     @ManyToOne
     private Cinemas cinemas;
 
+    @ManyToOne
+    private Films films;
+
+    public Seance(long hallNum, String date, Cinemas cinemas, Films films) {
+        this.hallNum = hallNum;
+        this.date = date;
+        this.cinemas = cinemas;
+        this.films = films;
+    }
+
+    public Films getFilms() {
+        return films;
+    }
+
+    public void setFilms(Films films) {
+        this.films = films;
+    }
+
     public Seance() {
     }
 
     public Seance(long hallNum, String film, String date, Cinemas cinemas) {
         this.hallNum = hallNum;
-        this.film = film;
         this.date = date;
         this.cinemas = cinemas;
     }
@@ -44,14 +61,6 @@ public class Seance {
 
     public void setHallNum(long hallNum) {
         this.hallNum = hallNum;
-    }
-
-    public String getFilm() {
-        return film;
-    }
-
-    public void setFilm(String film) {
-        this.film = film;
     }
 
     public String getDate() {

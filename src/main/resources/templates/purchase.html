@@ -90,7 +90,7 @@
     <div class="card cardLeft w-100 h-100">
         <h1>Star fish <span>Cinema</span></h1>
         <div class="title">
-            <h2 class="text-black fw-bold mt-2" th:text="${ticket.seance.film}"></h2>
+            <h2 class="text-black fw-bold mt-2" th:text="${ticket.seance.films.name}"></h2>
             <span>Фильм</span>
         </div>
         <div sec:authorize="hasRole('USER')" class="name">

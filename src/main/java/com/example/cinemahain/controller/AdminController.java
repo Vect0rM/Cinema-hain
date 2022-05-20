@@ -25,8 +25,9 @@ public class AdminController {
     final private WorkersRepo workersRepo;
     final private CinemasRepo cinemasRepo;
     final private HallsRepo hallsRepo;
+    final private GenresRepo genresRepo;
     //Конструктор с репозиториями
-    public AdminController(FilmsRepo filmsRepo, PromotionsRepo promotionsRepo, UserRepo userRepo, TicketRepo ticketRepo, SeanceRepo seanceRepo, WorkersRepo workersRepo, CinemasRepo cinemasRepo, HallsRepo hallsRepo) {
+    public AdminController(FilmsRepo filmsRepo, PromotionsRepo promotionsRepo, UserRepo userRepo, TicketRepo ticketRepo, SeanceRepo seanceRepo, WorkersRepo workersRepo, CinemasRepo cinemasRepo, HallsRepo hallsRepo, GenresRepo genresRepo) {
         this.filmsRepo = filmsRepo;
         this.promotionsRepo = promotionsRepo;
         this.userRepo = userRepo;
@@ -35,6 +36,7 @@ public class AdminController {
         this.workersRepo = workersRepo;
         this.cinemasRepo = cinemasRepo;
         this.hallsRepo = hallsRepo;
+        this.genresRepo = genresRepo;
     }
     //Страница админ панели
     @GetMapping("/admin")
@@ -50,10 +52,13 @@ public class AdminController {
     }
     //Редактирование/добавление фильма пост запросом
     @PostMapping("/admin/films")
-    public String adminPanelFilmsPost(@RequestParam String id, @RequestParam String name, @RequestParam String photoSrc, @RequestParam String text) {
+    public String adminPanelFilmsPost(@RequestParam String id, @RequestParam String name, @RequestParam String photoSrc, @RequestParam String text, @RequestParam String genre) {
         Films film;
         if (id.isEmpty()) {
-            film = new Films(name, text, photoSrc);
+            Genres genres = genresRepo.findById(Long.parseLong(genre)).get();
+            film = new Films(name, text, photoSrc, genres);
+            genres.getFilms().add(film);
+            genresRepo.save(genres);
         } else {
             film = filmsRepo.findById(Long.valueOf(id)).get();
             if (!name.isEmpty()) {
@@ -65,6 +70,17 @@ public class AdminController {
             if (!photoSrc.isEmpty()) {
                 film.setPhotoSrc(photoSrc);
             }
+            if (!genre.isEmpty()) {
+                Genres genres = genresRepo.findById(Long.parseLong(genre)).get();
+                if (film.getGenres() != null) {
+                    Genres genres1 = film.getGenres();
+                    genres1.getFilms().remove(film);
+                    genresRepo.save(genres1);
+                }
+                film.setGenres(genres);
+                genres.getFilms().add(film);
+                genresRepo.save(genres);
+            }
         }
         filmsRepo.save(film);
         return "redirect:/admin";
@@ -74,6 +90,9 @@ public class AdminController {
     public String adminPanelFilmsRemove(@RequestParam String id) {
         if (!id.isEmpty()) {
             Films film = filmsRepo.findById(Long.valueOf(id)).get();
+            Genres genres = film.getGenres();
+            genres.getFilms().remove(film);
+            genresRepo.save(genres);
             filmsRepo.delete(film);
         }
         return "redirect:/admin";
@@ -87,10 +106,10 @@ public class AdminController {
     }
     //Редактирование/добавление акций пост запросом
     @PostMapping("/admin/promotions")
-    public String adminPanelPromotionsPost(@RequestParam String id, @RequestParam String name, @RequestParam String text) {
+    public String adminPanelPromotionsPost(@RequestParam String id, @RequestParam String name, @RequestParam String text, @RequestParam String photo) {
         Promotions promotions;
         if (id.isEmpty()) {
-            promotions = new Promotions(name, text);
+            promotions = new Promotions(name, text, photo);
         } else {
             promotions = promotionsRepo.findById(Long.valueOf(id)).get();
             if (!name.isEmpty()) {
@@ -98,6 +117,9 @@ public class AdminController {
             }
             if (!text.isEmpty()) {
                 promotions.setText(text);
+            }
+            if (!photo.isEmpty()) {
+                promotions.setPhotoSrc(photo);
             }
         }
         promotionsRepo.save(promotions);
@@ -311,10 +333,13 @@ public class AdminController {
         Seance seance;
         if (id.isEmpty()) {
             Cinemas cinemas = cinemasRepo.findById(Long.parseLong(cinema)).get();
-            seance = new Seance(Long.parseLong(hall), film, date, cinemas);
+            Films films = filmsRepo.findById(Long.parseLong(film)).get();
+            seance = new Seance(Long.parseLong(hall), date, cinemas, films);
             seanceRepo.save(seance);
+            films.getSeances().add(seance);
             cinemas.getSeances().add(seance);
             cinemasRepo.save(cinemas);
+            filmsRepo.save(films);
         } else {
             seance = seanceRepo.findById(Long.valueOf(id)).get();
             if (!cinema.isEmpty()) {
@@ -327,7 +352,10 @@ public class AdminController {
                 seance.setDate(date);
             }
             if (!film.isEmpty()) {
-                seance.setFilm(film);
+                Films films = filmsRepo.findById(Long.parseLong(film)).get();
+                seance.setFilms(films);
+                films.getSeances().add(seance);
+                filmsRepo.save(films);
             }
             if (!hall.isEmpty()) {
                 seance.setHallNum(Long.parseLong(hall));
@@ -356,6 +384,9 @@ public class AdminController {
             Seance seance = seanceRepo.findById(Long.valueOf(id)).get();
             Cinemas cinemas = seance.getCinemas();
             cinemas.getSeances().remove(seance);
+            Films films = seance.getFilms();
+            films.getSeances().remove(seance);
+            filmsRepo.save(films);
             cinemasRepo.save(cinemas);
             Set<Ticket> tickets = seance.getTickets();
             for (Ticket t:
@@ -369,6 +400,34 @@ public class AdminController {
             seance.getTickets().removeAll(Collections.singleton(ticketRepo.findTicketBySeanceId(Long.parseLong(id))));
             ticketRepo.deleteAll(tickets);
             seanceRepo.delete(seance);
+        }
+        return "redirect:/admin";
+    }
+    @GetMapping("/admin/genres")
+    public String adminPanelGenres(Model model) {
+        Iterable<Genres> genres = genresRepo.findAll();
+        model.addAttribute("genres", genres);
+        return "adminPanel/adminGenres";
+    }
+    @PostMapping("/admin/genres")
+    public String adminPanelGenresPost(@RequestParam String id, @RequestParam String name) {
+        Genres genres;
+        if (id.isEmpty()) {
+            genres = new Genres(name);
+        } else {
+            genres = genresRepo.findById(Long.valueOf(id)).get();
+            if (!name.isEmpty()) {
+                genres.setName(name);
+            }
+        }
+        genresRepo.save(genres);
+        return "redirect:/admin";
+    }
+    @PostMapping("/admin/genres/remove")
+    public String adminPanelGenresRemove(@RequestParam String id) {
+        if (!id.isEmpty()) {
+            Genres genres = genresRepo.findById(Long.parseLong(id)).get();
+            genresRepo.delete(genres);
         }
         return "redirect:/admin";
     }

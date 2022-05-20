@@ -1,7 +1,10 @@
 package com.example.cinemahain.controller;
 
+import com.example.cinemahain.models.Films;
+import com.example.cinemahain.models.Seance;
 import com.example.cinemahain.models.Ticket;
 import com.example.cinemahain.models.User;
+import com.example.cinemahain.repository.SeanceRepo;
 import com.example.cinemahain.repository.TicketRepo;
 import com.example.cinemahain.repository.UserRepo;
 import org.springframework.stereotype.Controller;
@@ -10,21 +13,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 //Контроллер билетов и их покупки
 @Controller
 public class TicketsController {
 
     private final TicketRepo ticketRepo;
     private final UserRepo userRepo;
+    private final SeanceRepo seanceRepo;
     //Конструктор с репозиториями билетов и пользователей
-    public TicketsController(TicketRepo ticketRepo, UserRepo userRepo) {
+    public TicketsController(TicketRepo ticketRepo, UserRepo userRepo, SeanceRepo seanceRepo) {
         this.ticketRepo = ticketRepo;
         this.userRepo = userRepo;
+        this.seanceRepo = seanceRepo;
     }
     //Страница с выбором билета
     @GetMapping("/cinemas/{name}/{id}")
     public String tickets(@PathVariable(value = "name") String name, @PathVariable(value = "id") Long id, Model model) {
+        Seance seance = seanceRepo.findById(id).get();
+        Films films = seance.getFilms();
         Iterable<Ticket> tickets = ticketRepo.findTicketBySeanceId(id);
+        model.addAttribute("film", films);
         model.addAttribute("tickets", tickets);
         return "tickets";
     }

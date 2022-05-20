@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface SeanceRepo extends CrudRepository<Seance, Long> {
     //Поиск сеанса по имени кинотеатра
     Iterable<Seance> findByCinemas_Name(String name);
+    Iterable<Seance> findByFilmsName(String name);
 }
