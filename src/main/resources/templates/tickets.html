@@ -12,6 +12,7 @@
             margin-top: 1%;
             margin-right: 1%;
             border-radius: 6px;
+            font-size: 0;
         }
         .screen {
             border-radius: 100px 100px 1px 1px;
@@ -75,6 +76,7 @@
             </div>
         </section>
         <div class="container py-4 text-white" >
+            <form method="post">
             <div  class="mt-5 bg-dark p-5 mb-4 bg-light rounded-3">
                 <section class="text-center container">
                     <div class="col-lg-6 col-md-8 mx-auto">
@@ -84,22 +86,22 @@
                     </div>
                 </section>
                 <div class="container mt-3">
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-center" th:if="">
                         <div class="number"><p class="text-center mt-2">1</p></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
+                        <div class="square btn-danger" id="1" th:name="ticket"></div>
+                        <div class="square btn-danger" id="2"></div>
+                        <div class="square btn-danger" id="3"></div>
+                        <div class="square btn-danger" id="4"></div>
+                        <div class="square btn-danger" id="5"></div>
                         <div class="number"><p class="text-center mt-2">1</p></div>
                     </div>
                     <div class="row justify-content-center">
                         <div class="number"><p class="text-center mt-2">2</p></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
+                        <div class="square btn-danger" id="6"></div>
+                        <div class="square btn-danger" id="7"></div>
+                        <div class="square btn-danger" id="8"></div>
+                        <div class="square btn-danger" id="9"></div>
+                        <div class="square btn-danger" id="10"></div>
                         <div class="number"><p class="text-center mt-2">2</p></div>
                     </div>
                     <div class="row justify-content-center">
@@ -131,6 +133,8 @@
                     </div>
                 </div>
             </div>
+            <button type="submit" class="cardWrap w-50 btn btn-warning btn-lg text-black">Купить</button>
+            </form>
         </div>
 
     </main>
