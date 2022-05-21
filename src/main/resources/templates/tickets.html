@@ -86,49 +86,29 @@
                     </div>
                 </section>
                 <div class="container mt-3">
-                    <div class="row justify-content-center" th:if="">
+                    <div class="row justify-content-center">
                         <div class="number"><p class="text-center mt-2">1</p></div>
-                        <div class="square btn-danger" id="1" th:name="ticket"></div>
-                        <div class="square btn-danger" id="2"></div>
-                        <div class="square btn-danger" id="3"></div>
-                        <div class="square btn-danger" id="4"></div>
-                        <div class="square btn-danger" id="5"></div>
+                        <input class="square btn-danger" readonly style="border: 0;" th:name="ticket"  th:each="el : ${tickets}" th:if="${el.place <= 5}" th:classappend="${el.reserve} ? 'bg-danger' : ''" th:id="${el.place}">
                         <div class="number"><p class="text-center mt-2">1</p></div>
                     </div>
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-center" >
                         <div class="number"><p class="text-center mt-2">2</p></div>
-                        <div class="square btn-danger" id="6"></div>
-                        <div class="square btn-danger" id="7"></div>
-                        <div class="square btn-danger" id="8"></div>
-                        <div class="square btn-danger" id="9"></div>
-                        <div class="square btn-danger" id="10"></div>
+                        <input class="square btn-danger" readonly style="border: 0;" th:name="ticket"  th:each="el : ${tickets}" th:classappend="${el.reserve} ? 'bg-danger' : ''" th:if="${el.place <= 10 && el.place > 5 }" th:id="${el.place}">
                         <div class="number"><p class="text-center mt-2">2</p></div>
                     </div>
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-center" >
                         <div class="number"><p class="text-center mt-2">3</p></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
+                        <input class="square btn-danger" readonly style="border: 0;" th:name="ticket"  th:each="el : ${tickets}" th:classappend="${el.reserve} ? 'bg-danger' : ''" th:if="${el.place <= 15 && el.place > 10 }" th:id="${el.place}">
                         <div class="number"><p class="text-center mt-2">3</p></div>
                     </div>
                     <div class="row justify-content-center">
                         <div class="number"><p class="text-center mt-2">4</p></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
+                        <input class="square btn-danger" readonly style="border: 0;" th:name="ticket"  th:each="el : ${tickets}" th:classappend="${el.reserve} ? 'bg-danger' : ''" th:if="${el.place <= 20 && el.place > 15 }" th:id="${el.place}">
                         <div class="number"><p class="text-center mt-2">4</p></div>
                     </div>
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-center" >
                         <div class="number"><p class="text-center mt-2">5</p></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
-                        <div class="square btn-danger"></div>
+                        <input class="square btn-danger" readonly style="border: 0;" th:name="ticket"  th:each="el : ${tickets}" th:classappend="${el.reserve} ? 'bg-danger' : ''" th:if="${el.place <= 25 && el.place > 20 }" th:id="${el.place}">
                         <div class="number"><p class="text-center mt-2">5</p></div>
                     </div>
                 </div>

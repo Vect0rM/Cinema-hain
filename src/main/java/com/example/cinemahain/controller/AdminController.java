@@ -369,7 +369,7 @@ public class AdminController {
     public String AdminPanelSeanceAdd(@RequestParam String id,@RequestParam String amount, @RequestParam String prise){
         if (!amount.isEmpty() && !prise.isEmpty() && !id.isEmpty()) {
             Seance seance = seanceRepo.findById(Long.valueOf(id)).get();
-            for (int i = 0; i < Integer.parseInt(amount); i++) {
+            for (int i = 1; i < Integer.parseInt(amount) + 1; i++) {
                 Ticket ticket2 = new Ticket(Long.parseLong(prise), false, i, seance);
                 seance.getTickets().add(ticket2);
             }

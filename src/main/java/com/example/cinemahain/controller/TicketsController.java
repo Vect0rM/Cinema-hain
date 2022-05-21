@@ -7,12 +7,16 @@ import com.example.cinemahain.models.User;
 import com.example.cinemahain.repository.SeanceRepo;
 import com.example.cinemahain.repository.TicketRepo;
 import com.example.cinemahain.repository.UserRepo;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Arrays;
 
 //Контроллер билетов и их покупки
 @Controller
@@ -27,9 +31,24 @@ public class TicketsController {
         this.userRepo = userRepo;
         this.seanceRepo = seanceRepo;
     }
+    public String getCurrentUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
     //Страница с выбором билета
     @GetMapping("/cinemas/{name}/{id}")
     public String tickets(@PathVariable(value = "name") String name, @PathVariable(value = "id") Long id, Model model) {
+        Seance seance = seanceRepo.findById(id).get();
+        Films films = seance.getFilms();
+        Iterable<Ticket> tickets = ticketRepo.findTicketBySeanceId(id);
+        model.addAttribute("film", films);
+        model.addAttribute("tickets", tickets);
+        return "tickets";
+    }
+    @PostMapping("/cinemas/{name}/{id}")
+    public String ticketsPost(@PathVariable(value = "name") String name, @PathVariable(value = "id") Long id,@RequestParam(defaultValue = "-1") Long[] ticket ,Model model) {
+        User user = userRepo.findByUsername(getCurrentUsername());
+        System.out.println(Arrays.toString(ticket));
         Seance seance = seanceRepo.findById(id).get();
         Films films = seance.getFilms();
         Iterable<Ticket> tickets = ticketRepo.findTicketBySeanceId(id);
