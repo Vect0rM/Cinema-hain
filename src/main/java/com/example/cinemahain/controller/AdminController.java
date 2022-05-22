@@ -372,8 +372,8 @@ public class AdminController {
             for (int i = 1; i < 26; i++) {
                 Ticket ticket2 = new Ticket(Long.parseLong(prise), false, i, seance);
                 seance.getTickets().add(ticket2);
+                seanceRepo.save(seance);
             }
-            seanceRepo.save(seance);
         }
         return "redirect:/admin";
     }

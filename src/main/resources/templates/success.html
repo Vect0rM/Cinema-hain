@@ -47,7 +47,7 @@
             color: #a2aeae;
         }
         .title {
-            margin: 2em 0 0 0;
+            margin: 4em 0 0 0;
         }
         .name, .seat {
             margin: 0.6em 0 0 0;
@@ -74,65 +74,43 @@
 <body class="d-flex h-100 text-center text-white bg-black">
 <header th:insert="blocks/header :: header"></header>
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+    <section class="py-5 text-center container">
+        <div class="row py-lg-2">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <p class="lead text-white">Поздравляем с покупкой!</p>
+            </div>
+        </div>
+    </section>
     <form method="post">
-        <div class="cardWrap w-50 h-100" >
+        <div class="cardWrap w-50 h-100" th:each="el : ${success}">
             <div class="card cardLeft w-100 h-100">
                 <h1>Star fish <span>Cinema</span></h1>
                 <div class="title">
-                    <h2 class="text-black fw-bold mt-5" th:text="${tickMain.seance.films.name}"></h2>
+                    <h2 class="text-black fw-bold mt-2" th:text="${el.seance.films.name}"></h2>
                     <span>Фильм</span>
                 </div>
-                <div sec:authorize="hasRole('USER')" class="name">
-                    <input type="text" name="user" th:value="${#authentication.getPrincipal().getUsername}" class="form-control text-black fw-bold" placeholder="Логин" required>
-                    <span>Владелец билета</span>
-                </div>
-                <div sec:authorize="!hasRole('USER')" class="name">
-                    <input type="text" name="user" class="form-control text-black fw-bold mt-1" placeholder="Логин" required>
-                    <span>Владелец билета</span>
+                <div class="name">
+                    <h2 class="text-black fw-bold"  th:text="${el.users.username}"></h2>
+                    <span>Владелец</span>
                 </div>
                 <div class="seat">
-                    <h2 class="text-black fw-bold" th:text="${tickMain.place}"></h2>
+                    <h2 class="text-black fw-bold" th:text="${el.place}"></h2>
                     <span>seat</span>
                 </div>
                 <div class="time">
-                    <h2 class="pe-3 text-black fw-bold" th:text="${tickMain.seance.date}"></h2>
+                    <h2 class="pe-3 text-black fw-bold" th:text="${el.seance.date}"></h2>
                     <span class="pe-3">Время</span>
+                </div>
+                <div class="time">
+                    <h2 class="pe-3 text-black fw-bold" th:text="${el.price}"></h2>
+                    <span class="pe-3">Цена</span>
                 </div>
             </div>
         </div>
-    <div class="cardWrap w-50 h-100" th:each="el : ${tick}">
-    <div class="card cardLeft w-100 h-100">
-        <h1>Star fish <span>Cinema</span></h1>
-        <div class="title">
-            <h2 class="text-black fw-bold mt-2" th:text="${el.seance.films.name}"></h2>
-            <span>Фильм</span>
-        </div>
-
-        <div class="seat">
-            <h2 class="text-black fw-bold" th:text="${el.place}"></h2>
-            <span>seat</span>
-        </div>
-        <div class="time">
-            <h2 class="pe-3 text-black fw-bold" th:text="${el.seance.date}"></h2>
-            <span class="pe-3">Время</span>
-        </div>
-    </div>
-    </div>
-    <button type="submit" class="cardWrap w-50 btn btn-warning btn-lg text-white">Купить</button>
+        <button type="submit" class="cardWrap w-50 btn btn-warning btn-lg text-white">Далее</button>
     </form>
 </div>
 <div th:insert="blocks/footerr :: footer"></div>
-    </div>
+</div>
 </body>
 </html>

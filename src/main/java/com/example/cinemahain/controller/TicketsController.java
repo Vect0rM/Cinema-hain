@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 //Контроллер билетов и их покупки
@@ -35,6 +36,9 @@ public class TicketsController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
     }
+    private final ArrayList<Ticket> ticketsCart = new ArrayList<>();
+    private ArrayList<Ticket> ticketsSuccess = new ArrayList<>();
+
     //Страница с выбором билета
     @GetMapping("/cinemas/{name}/{id}")
     public String tickets(@PathVariable(value = "name") String name, @PathVariable(value = "id") Long id, Model model) {
@@ -47,43 +51,73 @@ public class TicketsController {
     }
     @PostMapping("/cinemas/{name}/{id}")
     public String ticketsPost(@PathVariable(value = "name") String name, @PathVariable(value = "id") Long id,@RequestParam(defaultValue = "-1") Long[] ticket ,Model model) {
-        User user = userRepo.findByUsername(getCurrentUsername());
-        System.out.println(Arrays.toString(ticket));
-        Seance seance = seanceRepo.findById(id).get();
-        Films films = seance.getFilms();
-        Iterable<Ticket> tickets = ticketRepo.findTicketBySeanceId(id);
-        model.addAttribute("film", films);
-        model.addAttribute("tickets", tickets);
-        return "tickets";
+        for (Long t:
+             ticket) {
+            if (t != null){
+                ticketsCart.add(ticketRepo.findTicketBySeanceIdAndPlace(id, t));
+            }
+        }
+        return "redirect:/cinemas/purchase/buy";
     }
     //Страница с покупкой билета
-    @GetMapping("/cinemas/{name}/{id}/{Tid}")
-    public String purchase(@PathVariable(value = "name") String name, @PathVariable(value = "id") Long id, @PathVariable(value = "Tid") Long Tid, Model model) {
-        Ticket ticket = ticketRepo.findById(Tid).get();
-        model.addAttribute("ticket", ticket);
+    @GetMapping("/cinemas/purchase/buy")
+    public String purchase(Model model) {
+        ticketsSuccess = new ArrayList<>(ticketsCart);
+        Ticket mainTicket = ticketsCart.get(0);
+        ticketsCart.remove(0);
+        model.addAttribute("tickMain", mainTicket);
+        if (ticketsCart.size() >= 1) {
+            model.addAttribute("tick", ticketsCart);
+        }
         return "purchase";
     }
     //Обработка покупки билета пост запросом
-    @PostMapping("/cinemas/{name}/{id}/{Tid}")
-    public String purchasePost(@PathVariable(value = "name") String name, @PathVariable(value = "id") Long id, @PathVariable(value = "Tid") Long Tid, @RequestParam String user, Model model) {
-        Ticket ticket = ticketRepo.findById(Tid).get();
+    @PostMapping("/cinemas/purchase/buy")
+    public String purchasePost(@RequestParam(defaultValue = "-1") String user) {
+        User user1;
+        ticketsCart.add(ticketsSuccess.get(0));
+        if (!user.equals("-1")) {
         if (!userRepo.existsByUsername(user)) {
-            User user2 = new User(user);
-            userRepo.save(user2);
-            user2.setTicket(ticket);
-            ticket.setUsers(user2);
+            user1 = new User(user);
+            userRepo.save(user1);
+            for (Ticket ticket:
+                 ticketsSuccess) {
+            user1.setTicket(ticket);
+            ticket.setUsers(user1);
             ticket.setReserve(true);
             ticketRepo.save(ticket);
-            userRepo.save(user2);
+            userRepo.save(user1);
+            ticketsCart.remove(ticket);
+            }
         } else {
-        User user1 = userRepo.findByUsername(user);
+            user1 = userRepo.findByUsername(user);
+            for (Ticket ticket:
+                 ticketsSuccess) {
         user1.setTicket(ticket);
         user1.getTicket().add(ticket);
         userRepo.save(user1);
         ticket.setUsers(user1);
         ticket.setReserve(true);
         ticketRepo.save(ticket);
+        ticketsCart.remove(ticket);
+            }
         }
-        return "redirect:/cinemas/{name}/{id}";
+        return "redirect:/cinemas/purchase/success";
+        }
+        return "redirect:/";
+    }
+    @GetMapping("/cinemas/purchase/success")
+    public String success(Model model) {
+        model.addAttribute("success", ticketsSuccess);
+        return "success";
+    }
+    @PostMapping("/cinemas/purchase/success")
+    public String successPost(Model model) {
+        if (ticketsSuccess.size() != 1) {
+            for (int i = 0; i < ticketsSuccess.size() - 1; i++) {
+                ticketsSuccess.remove(ticketsSuccess.get(i));
+            }
+        }
+        return "redirect:/cinemas";
     }
 }

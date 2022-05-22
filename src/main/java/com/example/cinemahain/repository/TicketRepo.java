@@ -9,5 +9,5 @@ import java.util.Set;
 public interface TicketRepo extends CrudRepository<Ticket, Long> {
     //Поиск билетов по id сеанса
     Set<Ticket> findTicketBySeanceId(Long id);
-
+    Ticket findTicketBySeanceIdAndPlace(Long id, Long place);
 }
