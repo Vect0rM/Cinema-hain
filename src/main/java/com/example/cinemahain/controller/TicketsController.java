@@ -80,7 +80,8 @@ public class TicketsController {
     public String purchasePost(@RequestParam(defaultValue = "-1") String user) {
         User user1;
         int check = 0;
-        ticketsCart.add(ticketsSuccess.get(0));
+        if (ticketsSuccess.size() > 0) {
+            ticketsCart.add(ticketsSuccess.get(0));
         for (Ticket t:
              ticketsSuccess) {
             if (t.isReserve()) {
@@ -115,7 +116,9 @@ public class TicketsController {
         }
         return "redirect:/cinemas/purchase/success";
         }
-        return "redirect:/";
+        return "redirect:/cinemas";
+        }
+        return "redirect:/cinemas";
     }
     @GetMapping("/cinemas/purchase/success")
     public String success(Model model) {
