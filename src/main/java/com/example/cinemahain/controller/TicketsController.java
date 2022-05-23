@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 //Контроллер билетов и их покупки
 @Controller
@@ -36,12 +35,13 @@ public class TicketsController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
     }
-    private final ArrayList<Ticket> ticketsCart = new ArrayList<>();
+    private ArrayList<Ticket> ticketsCart = new ArrayList<>();
     private ArrayList<Ticket> ticketsSuccess = new ArrayList<>();
 
     //Страница с выбором билета
     @GetMapping("/cinemas/{name}/{id}")
     public String tickets(@PathVariable(value = "name") String name, @PathVariable(value = "id") Long id, Model model) {
+        ticketsCart = new ArrayList<>();
         Seance seance = seanceRepo.findById(id).get();
         Films films = seance.getFilms();
         Iterable<Ticket> tickets = ticketRepo.findTicketBySeanceId(id);
@@ -51,11 +51,15 @@ public class TicketsController {
     }
     @PostMapping("/cinemas/{name}/{id}")
     public String ticketsPost(@PathVariable(value = "name") String name, @PathVariable(value = "id") Long id,@RequestParam(defaultValue = "-1") Long[] ticket ,Model model) {
+        ticketsCart = new ArrayList<>();
         for (Long t:
              ticket) {
             if (t != null){
                 ticketsCart.add(ticketRepo.findTicketBySeanceIdAndPlace(id, t));
             }
+        }
+        if (ticketsCart.size() == 0) {
+            return "redirect:/cinemas/{name}/{id}";
         }
         return "redirect:/cinemas/purchase/buy";
     }
@@ -75,8 +79,15 @@ public class TicketsController {
     @PostMapping("/cinemas/purchase/buy")
     public String purchasePost(@RequestParam(defaultValue = "-1") String user) {
         User user1;
+        int check = 0;
         ticketsCart.add(ticketsSuccess.get(0));
-        if (!user.equals("-1")) {
+        for (Ticket t:
+             ticketsSuccess) {
+            if (t.isReserve()) {
+                check++;
+            }
+        }
+        if (!user.equals("-1") && check == 0) {
         if (!userRepo.existsByUsername(user)) {
             user1 = new User(user);
             userRepo.save(user1);
@@ -113,11 +124,7 @@ public class TicketsController {
     }
     @PostMapping("/cinemas/purchase/success")
     public String successPost(Model model) {
-        if (ticketsSuccess.size() != 1) {
-            for (int i = 0; i < ticketsSuccess.size() - 1; i++) {
-                ticketsSuccess.remove(ticketsSuccess.get(i));
-            }
-        }
+        ticketsSuccess = new ArrayList<>();
         return "redirect:/cinemas";
     }
 }
